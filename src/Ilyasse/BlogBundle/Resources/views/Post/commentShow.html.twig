@@ -1,0 +1,14 @@
+<h3>Comments</h3>
+
+{% for comment in comments %}
+
+    <div class="well">
+        <p >Posted by <a href="#">{{ comment.user }}</a> on {{ comment.date|date('d/m/Y') }}</p>
+        {{ comment.content|raw }}
+
+    </div>
+    <hr>
+
+{% else %}
+    <li>No comments found !</li>
+{% endfor %}

@@ -1,0 +1,38 @@
+{% extends "IlyasseBlogBundle::layout.html.twig" %}
+
+{% block title %}
+    My Posts - {{ parent() }}
+{% endblock %}
+
+{% block blog_body %}
+
+    <h1>My Posts</h1>
+
+    {% for post in postsList %}
+
+        <div class="panel panel-success">
+
+            <div class="panel-heading">
+                <div style="float: left; margin-right: 1em;">
+                    {# On vérifie qu'une image soit bien associée à l'article #}
+                    {% if post.imageName is not null %}
+                        <img src="{{ asset(vich_uploader_asset(post, 'imageFile')) }}" alt="#" height="60">
+                    {% endif %}
+                </div>
+                {{ post.title }}
+            </div>
+            <div class="panel-body">
+                <a href="{{ path('ilyasse_blog_view', {'id': post.id}) }}">
+                    {{ (post.content|slice(0, 100))|raw }}
+                </a>
+            </div>
+            </a>
+            <p class="post-meta">Posted by <a href="#">{{ post.author }}</a> on {{ post.date|date('d/m/Y') }}</p>
+        </div>
+        <hr>
+
+    {% else %}
+        <li>Pas (encore !) d'annonces</li>
+    {% endfor %}
+
+{% endblock %}

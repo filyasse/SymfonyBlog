@@ -1,0 +1,55 @@
+<div class="well">
+    {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+
+    {{ form_errors(form) }}
+
+
+    {% if form.date is defined %}
+        {{ form_row(form.date) }}
+    {% endif %}
+
+
+    <div class="form-group">
+        {# Génération du label. #}
+        {{ form_label(form.title, "Title") }}
+
+        {# Affichage des erreurs pour ce champ précis. #}
+        {{ form_errors(form.title) }}
+
+        {# Génération de l'input. #}
+        {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+
+    <div class="form-group">
+        {{ form_label(form.content, "Content") }}
+        {{ form_errors(form.content) }}
+
+        {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+
+    <div class="form-group">
+        {{ form_label(form.categories, "Categories") }}
+        {{ form_errors(form.categories) }}
+
+        {{ form_widget(form.categories, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
+
+    {{ form_row(form.imageFile) }}
+
+
+
+
+    {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+
+
+    {{ form_rest(form) }}
+
+    {# Fermeture de la balise <form> du formulaire HTML #}
+    {{ form_end(form) }}
+</div>

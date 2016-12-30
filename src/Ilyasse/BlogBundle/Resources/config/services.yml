@@ -1,0 +1,7 @@
+services:
+#    ilyasse_blog.example:
+#        class: Ilyasse\BlogBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+
+

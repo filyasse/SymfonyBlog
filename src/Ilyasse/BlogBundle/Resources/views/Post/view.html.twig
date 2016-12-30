@@ -1,0 +1,43 @@
+{% extends "IlyasseBlogBundle::layout.html.twig" %}
+
+{% block title %}
+    {{ post.slug }} - {{ parent() }}
+{% endblock %}
+
+{% block blog_body %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div style="float: left; margin-right: 1em;">
+                {# On vérifie qu'une image soit bien associée à l'article #}
+                {% if post.imageName is not null %}
+                    <img src="{{ asset(vich_uploader_asset(post, 'imageFile')) }}" alt="#" height="60">
+                {% endif %}
+            </div>
+            {{ post.title }}
+        </div>
+        <div class="panel-body">
+            {{ post.content|raw }}
+        </div>
+        <i>Posted by {{ post.author }}, on {{ post.date|date('d/m/Y') }}</i>
+    </div>
+
+
+
+
+    <div class="panel panel-primary">
+        {{ form_start(form) }}
+        <div class="panel-heading">
+            {{ form_label(form.content, "Add Comment") }}
+        </div>
+        <div class="panel-body">
+            {{ form_errors(form.content) }}
+            {{ form_widget(form.content) }}
+        </div>
+        <input type="submit" value="Create"
+               class="btn btn-default pull-right" />
+        {{ form_end(form) }}
+    </div>
+
+    {% include 'IlyasseBlogBundle:Post:commentShow.html.twig' with { 'comments': comments } %}
+{% endblock %}

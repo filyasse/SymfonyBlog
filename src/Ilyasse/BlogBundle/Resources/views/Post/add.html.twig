@@ -1,0 +1,11 @@
+{% extends "IlyasseBlogBundle::layout.html.twig" %}
+{% block body %}
+
+    <h2>Add a Post</h2>
+
+    {{ include("IlyasseBlogBundle:Post:form.html.twig") }}
+
+    <p>
+        Your Post will be published when the Administrator approve it
+    </p>
+{% endblock %}

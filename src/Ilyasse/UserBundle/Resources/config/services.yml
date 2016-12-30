@@ -1,0 +1,4 @@
+services:
+#    ilyasse_user.example:
+#        class: Ilyasse\UserBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

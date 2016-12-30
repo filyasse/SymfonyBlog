@@ -1,0 +1,180 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: en
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    #serializer:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    trusted_proxies: ~
+    session:
+        # http://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id:  session.handler.native_file
+        save_path:   "%kernel.root_dir%/../var/sessions/%kernel.environment%"
+        name:        blog_session
+    fragments:       ~
+    http_method_override: true
+    assets: ~
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   pdo_mysql
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        charset:  UTF8
+        server_version: 5.6
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: "%mailer_transport%"
+    host:      "%mailer_host%"
+    username:  "%mailer_user%"
+    password:  "%mailer_password%"
+    spool:     { type: memory }
+
+# Stof\DoctrineExtensionsBundle configuration
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
+
+fos_user:
+    db_driver:     orm
+    firewall_name: main
+    user_class:    Ilyasse\UserBundle\Entity\User
+
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+        jsqueeze: ~
+        scssphp:
+            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+
+ivory_ck_editor:
+    default_config:  my_config
+    configs:
+        my_config:
+            toolbar: full
+        comments:
+            toolbar: basic
+
+vich_uploader:
+    db_driver: orm
+    mappings:
+        post_image:
+            uri_prefix:         /images/post
+            upload_destination: '%kernel.root_dir%/../web/images/post'
+
+easy_admin:
+    design:
+        menu:
+            - label: 'Posts'
+              icon: 'newspaper-o'
+              children:
+                  - { entity: 'Post', icon: 'th-list', label: 'Post list', params: { sortField: 'date' }, default: true }
+                  - { entity: 'UnpublishedPosts', icon: 'ban', label: 'Unpublished Posts', params: { sortField: 'date' }}
+                  - { entity: 'Category', icon: 'tags', label: 'Categories' }
+                  - { entity: 'Post', icon: 'plus-circle', label: 'Add post', params: { action: 'new' } }
+            - { label: 'Users', entity: 'User', icon: 'users' }
+
+    entities:
+        User:
+            class: Ilyasse\UserBundle\Entity\User
+        Post:
+            class: Ilyasse\BlogBundle\Entity\Post
+            label: 'Posts'
+            list:
+                fields:
+                    - id
+                    - date
+                    - title
+                    - author
+                    - { property: 'imageName', type: 'image', base_path: "/images/post" }
+                    - published
+                    - categories
+
+            form:
+                fields:
+                    - { type: 'group', css_class: 'col-sm-7', label: 'Basic information', icon: 'pencil' }
+                    - { property: 'title', css_class: 'large' }
+                    - { property: 'author', css_class: 'large' }
+                    - { property: 'content', type: 'ckeditor' }
+                    - published
+                    - { type: 'divider' }
+                    - { property: 'categories', type: 'easyadmin_autocomplete' }
+                    - { type: 'group', css_class: 'col-sm-5', label: 'Attachments', icon: 'paperclip' }
+                    - { property: 'imageFile', type: 'vich_image', type_options: { required: true } }
+
+        UnpublishedPosts:
+            class: Ilyasse\BlogBundle\Entity\Post
+            disabled_actions: ['new']
+            list:
+                title: 'Unpublished Posts'
+                dql_filter: 'entity.published = 0'
+                fields:
+                    - id
+                    - date
+                    - title
+                    - author
+                    - { property: 'imageName', type: 'image', base_path: "/images/post" }
+                    - published
+                    - categories
+
+            form:
+                title: 'Edit Post'
+                fields:
+                    - { type: 'group', css_class: 'col-sm-8', label: 'Basic information', icon: 'pencil' }
+                    - { property: 'title', css_class: 'large' }
+                    - { property: 'author', css_class: 'large' }
+                    - { property: 'content', type: 'ckeditor' }
+                    - published
+                    - { type: 'divider' }
+                    - { property: 'categories', type: 'easyadmin_autocomplete' }
+                    - { type: 'group', css_class: 'col-sm-6', label: 'Attachments', icon: 'paperclip' }
+                    - { property: 'imageFile', type: 'vich_image', type_options: { required: true } }
+        Category:
+            class: Ilyasse\BlogBundle\Entity\Category
+            label: 'Categories'
+            list:
+                title: 'Post %%entity_label%%'
+
+

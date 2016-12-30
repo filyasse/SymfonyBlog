@@ -1,0 +1,40 @@
+ilyasse_blog_homepage:
+    path:     /{page}
+    methods:  [get]
+    defaults:
+        _controller: IlyasseBlogBundle:Post:index
+        page: 1
+    requirements:
+        page: \d+
+
+ilyasse_blog_view:
+    path:     /post/{id}
+    methods:  [get, post]
+    defaults:
+        _controller: IlyasseBlogBundle:Post:view
+    requirements:
+        id: \d+
+
+ilyasse_blog_add:
+    path:     /post/add
+    methods:  [get, post]
+    defaults:
+        _controller: IlyasseBlogBundle:Post:add
+
+ilyasse_blog_list:
+    path:     /post/list/{author}
+    methods:  [get]
+    defaults:
+        _controller: IlyasseBlogBundle:Post:list
+
+ilyasse_blog_contact:
+    path:    /contact
+    methods:  [get, post]
+    defaults:
+        _controller: IlyasseBlogBundle:Post:contact
+
+ilyasse_blog_about:
+    path:    /about
+    methods:  [get]
+    defaults:
+        _controller: IlyasseBlogBundle:Post:about

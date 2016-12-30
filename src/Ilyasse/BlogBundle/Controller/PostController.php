@@ -137,6 +137,7 @@ class PostController extends Controller
             $this->get('mailer')->send($message);
 
             $request->getSession()->getFlashBag()->add('notice', 'Your contact enquiry was successfully sent. Thank you!');
+            return $this->redirectToRoute('ilyasse_blog_contact');
         }
 
         return $this->render('IlyasseBlogBundle:Blog:contactForm.html.twig', array('form' => $form->createView(),

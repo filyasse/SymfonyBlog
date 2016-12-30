@@ -1,4 +1,3 @@
-Blog
+Symfony Blog Application
 ====
-
-A Symfony project created on November 29, 2016, 6:41 pm.
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/173d1d36-620a-45a2-9505-05695b0460d1/big.png)](https://insight.sensiolabs.com/projects/173d1d36-620a-45a2-9505-05695b0460d1)
